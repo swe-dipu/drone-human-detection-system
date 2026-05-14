@@ -1,0 +1,76 @@
+# ============================================================
+# Project Configuration — Drone Human Detection
+# All paths are relative to project root
+# ============================================================
+
+project:
+  name: "drone-human-detection"
+  version: "1.0.0"
+  description: "YOLOv8-based human detection and counting on VisDrone dataset"
+
+paths:
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  data_splits: "data/splits"
+  dataset_yaml: "data/dataset.yaml"
+  models_pretrained: "models/pretrained"
+  models_finetuned: "models/finetuned"
+  outputs: "outputs"
+  predictions: "outputs/predictions"
+  metrics: "outputs/metrics"
+  plots: "outputs/plots"
+
+dataset:
+  name: "VisDrone2019"
+  # VisDrone has 10 classes — we only care about these 3:
+  # 0=ignore, 1=pedestrian, 2=people, 3=bicycle, 4=car,
+  # 5=van, 6=truck, 7=tricycle, 8=awning-tricycle, 9=bus, 10=motor
+  target_classes:
+    pedestrian: 1    # single walking person
+    people: 2        # group / crowd
+    car: 4           # vehicle (secondary task)
+  
+  # Remapped to YOLO class indices (0-indexed)
+  yolo_classes:
+    0: "pedestrian"
+    1: "people"
+    2: "car"
+  
+  # Human classes for counting (both pedestrian and people count)
+  human_class_ids: [0, 1]
+  
+  image_size: 640          # YOLO input resolution
+  split_ratios:
+    train: 0.70
+    val: 0.20
+    test: 0.10
+
+model:
+  architecture: "yolov8s"  # 's' = small — best balance for CPU
+  pretrained: true          # start from COCO weights
+  
+  # CPU-appropriate training settings
+  epochs: 50               # reduce to 30 if too slow
+  batch_size: 4            # keep low on CPU (try 2 if RAM issues)
+  image_size: 640
+  workers: 2               # CPU data loading workers
+  
+  # Augmentation (built into Ultralytics)
+  augment: true
+  mosaic: 1.0
+  fliplr: 0.5
+  hsv_h: 0.015
+  hsv_s: 0.7
+  hsv_v: 0.4
+
+inference:
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  use_sahi: true
+  sahi_slice_height: 640
+  sahi_slice_width: 640
+  sahi_overlap_ratio: 0.2    # 20% overlap between slices
+
+evaluation:
+  iou_thresholds: [0.50, 0.75]
+  metrics: ["mAP50", "mAP50-95", "precision", "recall", "F1"]

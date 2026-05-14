@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+dronenet/
+env/
+
+# Conda
+.conda/
+
+# Model weights (too large for GitHub)
+*.pt
+*.pth
+*.onnx
+*.engine
+models/finetuned/
+models/exports/
+
+# Dataset (too large — document download steps in README instead)
+data/raw/
+data/processed/images/
+data/processed/labels/
+
+# Outputs (generated, not source)
+outputs/videos/
+outputs/predictions/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+runs/
+*.log
+wandb/
