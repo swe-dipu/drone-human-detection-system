@@ -130,19 +130,18 @@ VisDrone Raw Images (1920×1080)
   Detection  Human Count
   (boxes)    pedestrian + people
 ```
-
-```
-
 ### Class Mapping
 
-| Original VisDrone ID | Class Name | New YOLO ID | Role |
+| Original VisDrone ID | Class | New YOLO ID | Role |
 |:---:|:---:|:---:|:---:|
 | 0 | pedestrian | 0 | Human ✅ |
 | 1 | people | 1 | Human ✅ |
 | 3 | car | 2 | Vehicle ✅ |
 | 2,4,5,6,7,8,9 | others | — | Removed ❌ |
 
-```
+> **Human counting** = class 0 + class 1 detections combined
+
+---
 
 ## ⚙️ Installation
 
