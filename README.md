@@ -352,14 +352,18 @@ mAP50 improves from ~0.15 → ~0.30 by final epoch.
 python src/detect.py
 ```
 
-Sample output per image:
-```
-0000006_00159_d_0000001.jpg    humans=12  cars=0
-0000006_00479_d_0000002.jpg    humans=8   cars=2
-0000006_00899_d_0000003.jpg    humans=23  cars=1
-```
+### Sample Predictions
 
----
+<!-- After training, replace these with your actual output images -->
+<!-- Drag and drop outputs/plots/processed_samples.png here -->
+
+**Processed Labels (sanity check):**
+
+![Processed Samples](outputs/plots/processed_samples.png)
+
+**Prediction Grid:**
+
+![Prediction Grid](outputs/plots/grid_predictions.png)
 
 ---
 
