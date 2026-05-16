@@ -142,7 +142,7 @@ VisDrone Raw Images (1920×1080)
 | 3 | car | 2 | Vehicle ✅ |
 | 2,4,5,6,7,8,9 | others | — | Removed ❌ |
 
----
+```
 
 ## ⚙️ Installation
 
@@ -307,19 +307,19 @@ jupyter notebook notebooks/drone_detection.ipynb
 All three losses (box, classification, DFL) decrease steadily across 30 epochs.
 mAP50 improves from ~0.15 → ~0.30 by final epoch.
 
-![Training Results](models/finetuned/visdrone_yolov8s/results.png)
+![Training Results](runs/detect/models/finetuned/visdrone_yolov8s/results.png)
 
 ### Precision-Recall Curve
 
-![PR Curve](models/finetuned/visdrone_yolov8s/PR_curve.png)
+![PR Curve](runs/detect/models/finetuned/visdrone_yolov8s/PR_curve.png)
 
 ### F1-Confidence Curve
 
-![F1 Curve](models/finetuned/visdrone_yolov8s/F1_curve.png)
+![F1 Curve](runs/detect/models/finetuned/visdrone_yolov8s/F1_curve.png)
 
 ### Confusion Matrix
 
-![Confusion Matrix](models/finetuned/visdrone_yolov8s/confusion_matrix_normalized.png)
+![Confusion Matrix](runs/detect/models/finetuned/visdrone_yolov8s/confusion_matrix_normalized.png)
 
 
 ## 🔍 Result Analysis
