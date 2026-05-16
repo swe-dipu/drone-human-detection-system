@@ -11,7 +11,7 @@
 
 **Fine-tuned YOLOv8s for detecting and counting humans and vehicles from drone imagery**
 
-[Features](#-features) • [Architecture](#-architecture) • [Installation](#-installation) • [Dataset](#-dataset-setup) • [Training](#-training) • [Inference](#-inference) • [Results](#-results) • [Future Work](#-future-improvements)
+[Features](#-features) • [Architecture](#-architecture) • [Installation](#-installation) • [Dataset](#-dataset-setup) • [Training](#-training) • [Inference](#-inference) • [Results](#-results)
 
 </div>
 
@@ -22,7 +22,7 @@
 This project builds a **real-time human detection and counting system** for drone/UAV imagery using the **VisDrone2019** dataset and **YOLOv8s** fine-tuned for aerial object detection.
 
 Drone-based detection is significantly harder than ground-level detection because:
-- Objects appear as **tiny 10–30 pixel blobs** from 50–100m altitude
+- Objects appear as **tiny 10–30 pixel** from 50–100m altitude
 - **High crowd density** — 100+ people can appear in a single frame
 - **Heavy occlusion** — people overlap each other
 - **Varying altitude** — same person looks very different at different heights
@@ -84,7 +84,7 @@ drone-human-detection-system/
 │
 ├── models/
 │   ├── pretrained/                 # Base YOLOv8 weights
-│   └── finetuned/                  # Your trained weights (not tracked by git)
+│   └── finetuned/                  # trained weights 
 │       └── visdrone_yolov8s/
 │           └── weights/
 │               └── best.pt
