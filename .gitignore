@@ -40,6 +40,6 @@ outputs/predictions/
 Thumbs.db
 
 # Logs
-runs/
+#runs
 *.log
 wandb/
