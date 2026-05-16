@@ -105,22 +105,32 @@ drone-human-detection-system/
 ### Model Pipeline
 
 ```
-VisDrone Images (1920×1080)
-        ↓
-  Label Preprocessing
-  (filter 10 → 3 classes, remap IDs)
-        ↓
-  YOLOv8s Fine-tuning
-  (pretrained COCO → VisDrone)
-        ↓
-  Inference (640×640)
-        ↓
-  ┌─────────────┬──────────────┐
-  │  Detection  │   Counting   │
-  │  (boxes)    │  (humans)    │
-  └─────────────┴──────────────┘
-        ↓
-  Annotated Output
+VisDrone Raw Images (1920×1080)
+          │
+          ▼
+  Label Preprocessing          src/dataset.py
+  Filter 10 → 3 classes
+  Remap IDs: 0,1,3 → 0,1,2
+          │
+          ▼
+  Exploratory Data Analysis    src/eda.py
+  Class counts, size check
+          │
+          ▼
+  YOLOv8s Fine-tuning          src/train.py
+  Pretrained COCO → VisDrone
+  30 epochs, batch=4, CPU
+          │
+          ▼
+  Inference                    src/detect.py
+  conf=0.25, imgsz=640
+          │
+       ┌──┴──┐
+       ▼     ▼
+  Detection  Human Count
+  (boxes)    pedestrian + people
+```
+
 ```
 
 ### Class Mapping
@@ -282,39 +292,75 @@ jupyter notebook notebooks/drone_detection.ipynb
 
 ### Evaluation Metrics
 
-Run on the test set after training:
-
-```bash
-python evaluation/evaluate.py
-```
-
 | Metric | Value |
 |:---|:---:|
-| mAP@50 | — *(update after training)* |
-| mAP@50-95 | — *(update after training)* |
-| Precision | — *(update after training)* |
-| Recall | — *(update after training)* |
+| **mAP@0.5 (all classes)** | **0.275** |
+| **mAP@0.5-0.95** | **0.130** |
+| Pedestrian AP@0.5 | 0.679 |
+| People AP@0.5 | 0.147 |
+| Car AP@0.5 | 0.000 |
+| Best F1 Score | 0.28 @ conf=0.295 |
+| Pedestrian F1 | 0.65 (peak) |
 
-> Fill in your actual numbers from `python evaluation/evaluate.py` after training completes.
+### Training Curves
 
-### Sample Predictions
+All three losses (box, classification, DFL) decrease steadily across 30 epochs.
+mAP50 improves from ~0.15 → ~0.30 by final epoch.
 
-<!-- After training, replace these with your actual output images -->
-<!-- Drag and drop outputs/plots/processed_samples.png here -->
+![Training Results](models/finetuned/visdrone_yolov8s/results.png)
 
-**Processed Labels (sanity check):**
+### Precision-Recall Curve
 
-![Processed Samples](outputs/plots/processed_samples.png)
+![PR Curve](models/finetuned/visdrone_yolov8s/PR_curve.png)
 
-**Prediction Grid:**
+### F1-Confidence Curve
 
-![Prediction Grid](outputs/plots/grid_predictions.png)
+![F1 Curve](models/finetuned/visdrone_yolov8s/F1_curve.png)
 
-**Training Curves:**
+### Confusion Matrix
 
-![Losses](outputs/plots/losses.png)
+![Confusion Matrix](models/finetuned/visdrone_yolov8s/confusion_matrix_normalized.png)
 
-![mAP](outputs/plots/mAP.png)
+
+## 🔍 Result Analysis
+
+### What worked well
+- **Pedestrian detection is strong** — AP@0.5 = 0.679, F1 peak = 0.65
+- **Precision is very high** — at conf=0.79, precision reaches 1.00, meaning almost zero false positives
+- **Losses converge cleanly** — no signs of overfitting in 30 epochs
+
+### Where the model struggles
+
+| Issue | Root Cause | Solution |
+|:---|:---|:---|
+| Car AP = 0.000 | Very few car annotations in dataset | More training data / class weighting |
+| People AP = 0.147 | "People" = overlapping crowd, ambiguous boundaries | Longer training, better augmentation |
+| Low recall overall | Tiny objects suppressed at conf=0.25 | Use SAHI sliced inference |
+| Background confusion | 75% of pedestrians also flagged as background | Lower confidence threshold |
+
+### Confusion Matrix Interpretation
+
+- **Pedestrian**: 65% correctly predicted — model works
+- **People**: only 11% — heavily confused with background (crowds are hard)
+- **Car**: 0% — model never saw enough cars to learn them
+- **Background FP**: 33% of pedestrian, 78% of people, 60% of car predictions go to background — this means the model sees objects but isn't confident enough to fire
+
+---
+
+## 🔍 Inference
+
+```bash
+python src/detect.py
+```
+
+Sample output per image:
+```
+0000006_00159_d_0000001.jpg    humans=12  cars=0
+0000006_00479_d_0000002.jpg    humans=8   cars=2
+0000006_00899_d_0000003.jpg    humans=23  cars=1
+```
+
+---
 
 ---
 
