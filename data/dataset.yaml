@@ -1,0 +1,9 @@
+path: D:\Drone Project
+train: D:\Drone Project\data/raw/VisDrone2019-DET-train/images
+val: D:\Drone Project\data/raw/VisDrone2019-DET-val/images
+test: D:\Drone Project\data/raw/VisDrone2019-DET-test-dev/images
+nc: 3
+names:
+- pedestrian
+- people
+- car

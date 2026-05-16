@@ -19,6 +19,7 @@ models/exports/
 
 # Dataset (too large — document download steps in README instead)
 data/raw/
+data/processed
 data/processed/images/
 data/processed/labels/
 
