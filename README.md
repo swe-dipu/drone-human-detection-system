@@ -391,7 +391,24 @@ CONF       = 0.25     # detection confidence threshold
 DEVICE     = 'cpu'    # change to '0' for GPU
 ```
 
+## 🔍 Human Detection & Counting Output
 
+Each test image is processed by the model, bounding boxes are drawn per class, and the total human count (pedestrian + people) is overlaid on the image.
+
+> Images below are saved at:
+> `D:\Drone Project\runs\detect\models\finetuned\visdrone_yolov8s\`
+
+### Sample 1
+![Detection Output ](runs/detect/models/finetuned/visdrone_yolov8s/weights/0000006_00159_d_0000001.jpg)
+
+
+
+> **How to read the output:**
+> - Each box is labelled with its class — `pedestrian`, `people`, or `car`
+> - Top-left corner shows the total count: `Humans: N  Cars: N`
+> - Humans = pedestrian boxes + people boxes combined
+
+---
 
 ## 📁 Key Files Reference
 

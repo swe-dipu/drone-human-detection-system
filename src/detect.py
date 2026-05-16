@@ -1,7 +1,7 @@
 
 # src/detect.py
 # Run inference on test images + count humans per image.
-# Saves annotated images to outputs/predictions/
+# Saves annotated images to your custom local path.
 
 import os
 import cv2
@@ -10,16 +10,21 @@ from ultralytics import YOLO
 from config import (
     test_image, best_weights,
     FINAL_NAMES, HUMAN_IDS,
-    predictions_dir, DEVICE
+    DEVICE
 )
 
-os.makedirs(predictions_dir, exist_ok=True)
+# ── Custom save path ──────────────────────────────────────────
+SAVE_DIR = 'runs/detect/models/finetuned/visdrone_yolov8s'
+
+
+os.makedirs(SAVE_DIR, exist_ok=True)
 
 
 def run_inference():
     print('=' * 50)
     print('  Inference + Human Counting')
     print('=' * 50)
+    print(f'  Saving to: {SAVE_DIR}')
 
     if not os.path.exists(best_weights):
         print(f'ERROR: weights not found at {best_weights}')
@@ -42,7 +47,7 @@ def run_inference():
             verbose = False
         )
 
-        # Count detections
+        # Count detections by class
         detected_classes = results[0].boxes.cls.tolist()
         human_count = sum(1 for c in detected_classes if int(c) in HUMAN_IDS)
         car_count   = sum(1 for c in detected_classes if int(c) == 2)
@@ -55,11 +60,11 @@ def run_inference():
         cv2.putText(annotated, f'Humans: {human_count}  Cars: {car_count}',
                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 50, 50), 2)
 
-        # Save to outputs/predictions/
-        save_path = os.path.join(predictions_dir, os.path.basename(img_path))
+        # Save to custom local path
+        save_path = os.path.join(SAVE_DIR, os.path.basename(img_path))
         cv2.imwrite(save_path, cv2.cvtColor(annotated, cv2.COLOR_RGB2BGR))
 
-        # Show in window
+        # Show in notebook/window
         plt.figure(figsize=(16, 8))
         plt.imshow(annotated)
         plt.axis('off')
@@ -69,7 +74,7 @@ def run_inference():
 
         print(f'{os.path.basename(img_path):45s}  humans={human_count}  cars={car_count}')
 
-    print(f'\nAnnotated images saved → {predictions_dir}')
+    print(f'\nAll annotated images saved → {SAVE_DIR}')
 
 
 if __name__ == '__main__':
