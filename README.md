@@ -310,11 +310,11 @@ mAP50 improves from ~0.15 → ~0.30 by final epoch.
 
 ### Precision-Recall Curve
 
-![PR Curve](runs/detect/models/finetuned/visdrone_yolov8s/PR_curve.png)
+![PR Curve](runs/detect/models/finetuned/visdrone_yolov8s/BoxPR_curve.png)
 
 ### F1-Confidence Curve
 
-![F1 Curve](runs/detect/models/finetuned/visdrone_yolov8s/F1_curve.png)
+![F1 Curve](runs/detect/models/finetuned/visdrone_yolov8s/BoxF1_curve.png)
 
 ### Confusion Matrix
 
