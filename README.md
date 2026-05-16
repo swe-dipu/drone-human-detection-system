@@ -396,10 +396,10 @@ DEVICE     = 'cpu'    # change to '0' for GPU
 Each test image is processed by the model, bounding boxes are drawn per class, and the total human count (pedestrian + people) is overlaid on the image.
 
 > Images below are saved at:
-> `D:\Drone Project\runs\detect\models\finetuned\visdrone_yolov8s\`
+> `D:\Drone Project\outputs/plots/\`
 
 ### Sample 1
-![Detection Output ](runs/detect/models/finetuned/visdrone_yolov8s/weights/0000006_00159_d_0000001.jpg)
+![Detection Output ](outputs/plots/count.png)
 
 
 
